@@ -58,12 +58,13 @@ class _ChatsScreenState extends State<ChatsScreen> {
   AppBar buildAppBar() {
     return AppBar(
       automaticallyImplyLeading: false,
-      title: Text(""),
+      title: Text("Messages",style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),
+      centerTitle: true,
       elevation: 0,
       backgroundColor: Colors.white,
-      leading: BackButton(
-        color: Colors.black,
-      ),
+      leading: IconButton(
+        icon: Icon(Icons.arrow_back_ios_rounded,color: Colors.black,),
+      )
     );
   }
 }
