@@ -1,53 +1,54 @@
+import 'package:chatmodule/provider/userProvider.dart';
 import 'package:flutter/material.dart';
-
+import 'package:jiffy/jiffy.dart';
+import 'package:provider/provider.dart';
+import 'package:chatmodule/unitl.dart';
 import '../../constants.dart';
-import 'components/body.dart';
+import 'components/chatInbox.dart';
 
 class MessagesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    UserProvider userProvide = Provider.of(context, listen: false);
     return Scaffold(
-      appBar: buildAppBar(),
+      appBar: buildAppBar(userProvide),
       body: Body(),
     );
   }
 
-  AppBar buildAppBar() {
+  AppBar buildAppBar(UserProvider userProvide) {
     return AppBar(
       automaticallyImplyLeading: false,
+      elevation: 2,
+      backgroundColor: Colors.white,
       title: Row(
         children: [
-          BackButton(),
+          BackButton(
+            color: Colors.black,
+          ),
           CircleAvatar(
-            backgroundImage: AssetImage("assets/images/user_2.png"),
+            backgroundImage: userProvide.selectedUserChat.image.isEmpty
+                ? AssetImage("assets/images/user_2.png")
+                : NetworkImage(userProvide.selectedUserChat.image),
           ),
           SizedBox(width: kDefaultPadding * 0.75),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Kristin Watson",
-                style: TextStyle(fontSize: 16),
+                "${userProvide.selectedUserChat.name.capitalize()}",
+                style: TextStyle(fontSize: 16, color: Colors.black),
               ),
               Text(
-                "Active 3m ago",
-                style: TextStyle(fontSize: 12),
+                userProvide.selectedUserChat.isActive
+                    ? "Online"
+                    : "${Jiffy(DateTime.parse(userProvide.selectedUserChat.lastSceen)).fromNow()}",
+                style: TextStyle(fontSize: 12, color: Colors.grey),
               )
             ],
           )
         ],
       ),
-      actions: [
-        IconButton(
-          icon: Icon(Icons.local_phone),
-          onPressed: () {},
-        ),
-        IconButton(
-          icon: Icon(Icons.videocam),
-          onPressed: () {},
-        ),
-        SizedBox(width: kDefaultPadding / 2),
-      ],
     );
   }
 }

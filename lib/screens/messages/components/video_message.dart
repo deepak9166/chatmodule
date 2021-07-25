@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../../../constants.dart';
 
-class VideoMessage extends StatelessWidget {
+class ImageVideoMessage extends StatelessWidget {
+  ImageVideoMessage({this.link = "", this.isVideo = false});
+  final String link;
+  final isVideo;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -14,7 +17,7 @@ class VideoMessage extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
-              child: Image.asset("assets/images/Video Place Here.png"),
+              child: link.isNotEmpty ? Image.network(link) : SizedBox(),
             ),
             Container(
               height: 25,
@@ -23,11 +26,13 @@ class VideoMessage extends StatelessWidget {
                 color: kPrimaryColor,
                 shape: BoxShape.circle,
               ),
-              child: Icon(
-                Icons.play_arrow,
-                size: 16,
-                color: Colors.white,
-              ),
+              child: isVideo
+                  ? Icon(
+                      Icons.play_arrow,
+                      size: 16,
+                      color: Colors.white,
+                    )
+                  : SizedBox(),
             )
           ],
         ),
