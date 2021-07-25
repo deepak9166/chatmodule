@@ -27,7 +27,10 @@ class Message extends StatelessWidget {
           return AudioMessage(message: message);
           break;
         case ChatMessageType.video:
-          return ImageVideoMessage();
+          return ImageVideoMessage(
+            isVideo: true,
+            link: msg,
+          );
           break;
         case ChatMessageType.image:
           return ImageVideoMessage(

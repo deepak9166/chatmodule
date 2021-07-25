@@ -53,7 +53,6 @@ class _ChatInputFieldState extends State<ChatInputField> {
       child: SafeArea(
         child: Row(
           children: [
-            SizedBox(width: kDefaultPadding),
             Expanded(
               child: Container(
                 padding: EdgeInsets.symmetric(
@@ -152,25 +151,33 @@ class _ChatInputFieldState extends State<ChatInputField> {
 
   uploadImage(BuildContext context, bool isCamara) {
     UserProvider userData = Provider.of(context, listen: false);
+
     getImagePicker(isCamra: isCamara).then((result) async {
-      print(result);
-      File file = File(result.path);
-      final _storage = firebase_storage.FirebaseStorage.instance;
-      String _fileName = result.path.split("/").last;
-      await _storage
-          .ref()
-          .child(_fileName)
-          .putFile(file)
-          .whenComplete(() async {
-        firebase_storage.Reference ref =
-            firebase_storage.FirebaseStorage.instance.ref().child(_fileName);
-        await ref.getDownloadURL().then((fileURL) async {
-          await ref.getDownloadURL().then((imageURL) {
-            userData.setMessage(imageURL);
-            userData.sendMessage("image");
+      try {
+        print(result);
+        File file = File(result.path);
+        userData.imageUploading(true, file);
+        final _storage = firebase_storage.FirebaseStorage.instance;
+        String _fileName = result.path.split("/").last;
+        await _storage
+            .ref()
+            .child(_fileName)
+            .putFile(file)
+            .whenComplete(() async {
+          firebase_storage.Reference ref =
+              firebase_storage.FirebaseStorage.instance.ref().child(_fileName);
+          await ref.getDownloadURL().then((fileURL) async {
+            await ref.getDownloadURL().then((imageURL) {
+              userData.setMessage(imageURL);
+              userData.imageUploading(false, null);
+              userData.sendMessage("image");
+            });
           });
         });
-      });
+      } catch (e) {
+        userData.imageUploading(false, null);
+        print("Somthing wrong!!");
+      }
     });
   }
 }

@@ -13,14 +13,14 @@ class ChatUser {
 
 class UserList {
   String name, lastMessage, image;
-  String lastSceen;
+  String userCreateAt;
   bool isActive;
   String id;
   UserList({
     this.name,
     this.lastMessage,
     this.image,
-    this.lastSceen,
+    this.userCreateAt,
     this.isActive,
     this.id,
   });
@@ -31,7 +31,7 @@ class UserList {
     name = json['name'] ?? '';
     lastMessage = json['lastSeen'];
     image = json['image'];
-    lastSceen = json['createAt'];
+    userCreateAt = json['createAt'];
     isActive = json['status'];
     id = json.id;
   }

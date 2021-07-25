@@ -1,4 +1,6 @@
+import 'package:chatmodule/models/Chat.dart';
 import 'package:chatmodule/provider/userProvider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:provider/provider.dart';
@@ -39,11 +41,23 @@ class MessagesScreen extends StatelessWidget {
                 "${userProvide.selectedUserChat.name.capitalize()}",
                 style: TextStyle(fontSize: 16, color: Colors.black),
               ),
-              Text(
-                userProvide.selectedUserChat.isActive
-                    ? "Online"
-                    : "${Jiffy(DateTime.parse(userProvide.selectedUserChat.lastSceen)).fromNow()}",
-                style: TextStyle(fontSize: 12, color: Colors.grey),
+              StreamBuilder<DocumentSnapshot>(
+                stream:
+                    userProvide.getUserData(userProvide.selectedUserChat.id),
+                builder: (context, userStatus) {
+                  if (userStatus.connectionState == ConnectionState.active) {
+                    UserList selectedUser = UserList.fromJson(userStatus.data);
+                    userProvide.tabOnChat(
+                        selectedUser, userProvide.seletedChatId);
+                    return Text(
+                      selectedUser.isActive
+                          ? "Online"
+                          : "${Jiffy(DateTime.parse(selectedUser.lastMessage)).fromNow()}",
+                      style: TextStyle(fontSize: 12, color: Colors.grey),
+                    );
+                  }
+                  return Text("Loading...");
+                },
               )
             ],
           )

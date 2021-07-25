@@ -10,6 +10,7 @@ class ChatMessage {
   final bool isSender;
   final bool isReceverActive;
   final String messageTime;
+  final bool isRead;
 
   ChatMessage({
     this.text,
@@ -18,5 +19,6 @@ class ChatMessage {
     @required this.isSender,
     @required this.isReceverActive,
     @required this.messageTime,
+    @required this.isRead,
   });
 }

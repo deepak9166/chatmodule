@@ -75,7 +75,7 @@ class _BodyState extends State<Body> {
                 },
               ),
             )),
-        isSearch && searchUser.dataList.isNotEmpty
+        isSearch && searchUser.dataList != null
             ? Expanded(
                 child: ListView.builder(
                   itemCount: searchUser.dataList.length,
@@ -88,7 +88,7 @@ class _BodyState extends State<Body> {
 
                             isActive: false,
                             lastMessage: '',
-                            lastSeen: searchUser.dataList[index].lastSceen,
+                            lastSeen: searchUser.dataList[index].userCreateAt,
                             name: searchUser.dataList[index].name,
                             userImage: searchUser.dataList[index].image,
                             press: () {

@@ -1,6 +1,7 @@
 import 'package:chatmodule/firebase/db_method.dart';
 import 'package:chatmodule/models/ChatMessage.dart';
 import 'package:chatmodule/provider/userProvider.dart';
+import 'package:chatmodule/screens/messages/components/video_message.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -58,6 +59,16 @@ class Body extends StatelessWidget {
             },
           )),
         ),
+        userProvide.isUploading
+            ? Align(
+                alignment: Alignment.centerRight,
+                child: ImageVideoMessage(
+                  isVideo: false,
+                  localFile: userProvide.uploadingImageFile,
+                  loading: userProvide.isUploading,
+                ),
+              )
+            : SizedBox(),
         ChatInputField(),
       ],
     );

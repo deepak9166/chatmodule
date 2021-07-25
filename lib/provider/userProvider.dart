@@ -10,6 +10,8 @@ class UserProvider with ChangeNotifier {
   TextEditingController message = TextEditingController();
   String messageString = '';
   UserList selectedUserChat;
+  bool isUploading = false;
+  var uploadingImageFile;
 
   Stream<DocumentSnapshot> getUserData(String uId) {
     return FirebaseFirestore.instance
@@ -27,6 +29,12 @@ class UserProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  imageUploading(bool uploadStatus, var file) {
+    isUploading = uploadStatus;
+    notifyListeners();
+    uploadingImageFile = file;
+  }
+
   updateStatus(bool status) {
     FirebaseFirestore.instance
         .collection('users')
@@ -38,7 +46,7 @@ class UserProvider with ChangeNotifier {
     selectedId = selectUser.id;
     seletedChatId = chatId;
     selectedUserChat = selectUser;
-    notifyListeners();
+    // notifyListeners();
   }
 
   setMessage(String value) {
@@ -55,7 +63,6 @@ class UserProvider with ChangeNotifier {
 
     DataBase().updateChatRequestField(loginUserData.id, messageString,
         seletedChatId, selectedId, loginUserData.id);
-
     message.clear();
     messageString = "";
     notifyListeners();
