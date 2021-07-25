@@ -1,5 +1,7 @@
 import 'package:chatmodule/models/ChatMessage.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:jiffy/jiffy.dart';
 
 import '../../../constants.dart';
 import 'audio_message.dart';
@@ -16,7 +18,7 @@ class Message extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget messageContaint(ChatMessage message) {
+    Widget messageContaint(ChatMessage message, String msg) {
       switch (message.messageType) {
         case ChatMessageType.text:
           return TextMessage(message: message);
@@ -25,7 +27,12 @@ class Message extends StatelessWidget {
           return AudioMessage(message: message);
           break;
         case ChatMessageType.video:
-          return VideoMessage();
+          return ImageVideoMessage();
+          break;
+        case ChatMessageType.image:
+          return ImageVideoMessage(
+            link: msg,
+          );
           break;
         default:
           return SizedBox();
@@ -38,15 +45,24 @@ class Message extends StatelessWidget {
         mainAxisAlignment:
             message.isSender ? MainAxisAlignment.end : MainAxisAlignment.start,
         children: [
-          if (!message.isSender) ...[
-            CircleAvatar(
-              radius: 12,
-              backgroundImage: AssetImage("assets/images/user_2.png"),
-            ),
-            SizedBox(width: kDefaultPadding / 2),
-          ],
-          messageContaint(message),
-          if (message.isSender) MessageStatusDot(status: message.messageStatus)
+          Column(
+            // mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              messageContaint(message, message.text),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: kPagingTouchSlop / 4),
+                child: Row(
+                  children: [
+                    Text("${Jiffy(DateTime.parse(message.messageTime)).jm}"),
+                    if (message.isSender)
+                      MessageStatusDot(status: message.messageStatus)
+                  ],
+                ),
+              )
+            ],
+          )
         ],
       ),
     );
@@ -68,7 +84,7 @@ class MessageStatusDot extends StatelessWidget {
           return Theme.of(context).textTheme.bodyText1.color.withOpacity(0.1);
           break;
         case MessageStatus.viewed:
-          return kPrimaryColor;
+          return Theme.of(context).accentColor;
           break;
         default:
           return Colors.transparent;
@@ -77,17 +93,29 @@ class MessageStatusDot extends StatelessWidget {
 
     return Container(
       margin: EdgeInsets.only(left: kDefaultPadding / 2),
-      height: 12,
-      width: 12,
-      decoration: BoxDecoration(
-        color: dotColor(status),
-        shape: BoxShape.circle,
+      child: Stack(
+        children: [
+          Icon(
+            Icons.check,
+            size: 16,
+            color: dotColor(status),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 5),
+            child: Icon(
+              Icons.check,
+              size: 16,
+              color: dotColor(status),
+            ),
+          )
+        ],
       ),
-      child: Icon(
-        status == MessageStatus.not_sent ? Icons.close : Icons.done,
-        size: 8,
-        color: Theme.of(context).scaffoldBackgroundColor,
-      ),
+
+      //  Icon(
+      //   status == MessageStatus.not_sent ? Icons.close : Icons.done,
+      //   size: 8,
+      //   color: Theme.of(context).accentColor,
+      // ),
     );
   }
 }

@@ -1,71 +1,43 @@
-class Chat {
-  final String name, lastMessage, image, time;
-  final bool isActive;
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-  Chat({
+class ChatUser {
+  List<UserList> dataList;
+  ChatUser({this.dataList});
+
+  ChatUser.fromJson(QuerySnapshot<Object> json) {
+    // //print("in state model $json");
+    var subjectList = json.docs;
+    dataList = subjectList.map((item) => UserList.fromJson(item)).toList();
+  }
+}
+
+class UserList {
+  String name, lastMessage, image;
+  String lastSceen;
+  bool isActive;
+  String id;
+  UserList({
     this.name,
     this.lastMessage,
     this.image,
-    this.time,
+    this.lastSceen,
     this.isActive,
+    this.id,
   });
-}
 
-List chatsData = [
-  Chat(
-    name: "Jenny Wilson",
-    lastMessage: "Hope you are doing well...",
-    image: "assets/images/user.png",
-    time: "3m ago",
-    isActive: false,
-  ),
-  Chat(
-    name: "Esther Howard",
-    lastMessage: "Hello Abdullah! I am...",
-    image: "assets/images/user_2.png",
-    time: "8m ago",
-    isActive: true,
-  ),
-  Chat(
-    name: "Ralph Edwards",
-    lastMessage: "Do you have update...",
-    image: "assets/images/user_3.png",
-    time: "5d ago",
-    isActive: false,
-  ),
-  Chat(
-    name: "Jacob Jones",
-    lastMessage: "You’re welcome :)",
-    image: "assets/images/user_4.png",
-    time: "5d ago",
-    isActive: true,
-  ),
-  Chat(
-    name: "Albert Flores",
-    lastMessage: "Thanks",
-    image: "assets/images/user_5.png",
-    time: "6d ago",
-    isActive: false,
-  ),
-  Chat(
-    name: "Jenny Wilson",
-    lastMessage: "Hope you are doing well...",
-    image: "assets/images/user.png",
-    time: "3m ago",
-    isActive: false,
-  ),
-  Chat(
-    name: "Esther Howard",
-    lastMessage: "Hello Abdullah! I am...",
-    image: "assets/images/user_2.png",
-    time: "8m ago",
-    isActive: true,
-  ),
-  Chat(
-    name: "Ralph Edwards",
-    lastMessage: "Do you have update...",
-    image: "assets/images/user_3.png",
-    time: "5d ago",
-    isActive: false,
-  ),
-];
+  UserList.fromJson(DocumentSnapshot<Object> json) {
+    //print("in list data ${json}");
+    print("get name in model ${json['name']}");
+    name = json['name'] ?? '';
+    lastMessage = json['lastSeen'];
+    image = json['image'];
+    lastSceen = json['createAt'];
+    isActive = json['status'];
+    id = json.id;
+  }
+  Map<dynamic, dynamic> toJson() {
+    final Map<dynamic, dynamic> data = new Map<dynamic, dynamic>();
+    // data['name'] = this.name;
+    return data;
+  }
+}

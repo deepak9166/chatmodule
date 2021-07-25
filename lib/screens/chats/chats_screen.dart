@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../constants.dart';
-import 'components/body.dart';
+import 'components/addDemmyUser.dart';
+import 'components/chatList.dart';
 
 class ChatsScreen extends StatefulWidget {
   @override
@@ -16,7 +17,10 @@ class _ChatsScreenState extends State<ChatsScreen> {
       appBar: buildAppBar(),
       body: Body(),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => UserAddScreen()));
+        },
         backgroundColor: kPrimaryColor,
         child: Icon(
           Icons.person_add_alt_1,
@@ -54,13 +58,12 @@ class _ChatsScreenState extends State<ChatsScreen> {
   AppBar buildAppBar() {
     return AppBar(
       automaticallyImplyLeading: false,
-      title: Text("Chats"),
-      actions: [
-        IconButton(
-          icon: Icon(Icons.search),
-          onPressed: () {},
-        ),
-      ],
+      title: Text(""),
+      elevation: 0,
+      backgroundColor: Colors.white,
+      leading: BackButton(
+        color: Colors.black,
+      ),
     );
   }
 }

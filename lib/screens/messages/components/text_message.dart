@@ -19,7 +19,9 @@ class TextMessage extends StatelessWidget {
         vertical: kDefaultPadding / 2,
       ),
       decoration: BoxDecoration(
-        color: kPrimaryColor.withOpacity(message.isSender ? 1 : 0.1),
+        color: Theme.of(context)
+            .accentColor
+            .withOpacity(message.isSender ? 1 : 0.1),
         borderRadius: BorderRadius.circular(30),
       ),
       child: Text(
