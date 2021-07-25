@@ -1,19 +1,19 @@
 import 'package:chatmodule/models/Chat.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants.dart';
 import 'package:jiffy/jiffy.dart';
 
-class ChatCard extends StatelessWidget {
-  const ChatCard(
+class ChatCard extends StatefulWidget {
+  ChatCard(
       {Key key,
       @required this.press,
       this.isActive,
       this.lastMessage,
       this.lastSeen,
       this.name,
-      this.userImage})
-      : super(key: key);
+      this.userImage});
 
   final String name;
   final String lastMessage;
@@ -24,10 +24,17 @@ class ChatCard extends StatelessWidget {
   final VoidCallback press;
 
   @override
+  _ChatCardState createState() => _ChatCardState();
+}
+
+class _ChatCardState extends State<ChatCard> {
+  bool isSelected = false;
+
+  @override
   Widget build(BuildContext context) {
     //print(chat.time);
     return InkWell(
-      onTap: press,
+      onTap: widget.press,
       child: Container(
         decoration: BoxDecoration(
             color: Colors.white,
@@ -65,20 +72,20 @@ class ChatCard extends StatelessWidget {
                         ]),
                     child: CircleAvatar(
                       radius: 24,
-                      backgroundImage: userImage == null
+                      backgroundImage: widget.userImage == null
                           ? AssetImage("assets/images/user.png")
-                          : NetworkImage(userImage),
+                          : NetworkImage(widget.userImage),
                     ),
                   ),
-                  if (isActive)
+                  // if (isActive)
                     Positioned(
                       right: 0,
-                      bottom: 0,
+                      bottom: 35,
                       child: Container(
                         height: 16,
                         width: 16,
                         decoration: BoxDecoration(
-                          color: kPrimaryColor,
+                          color: Colors.green,
                           shape: BoxShape.circle,
                           border: Border.all(
                               color: Theme.of(context).scaffoldBackgroundColor,
@@ -95,27 +102,83 @@ class ChatCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        name,
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w500),
+                      Container(
+                       width: 130,
+                        color: Colors.green,
+                        child: Text(
+                          widget.name,maxLines: 1,overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.w500),
+                        ),
                       ),
                       SizedBox(height: 8),
                       Opacity(
                         opacity: 0.64,
                         child: Text(
-                          lastMessage,
+                          widget.lastMessage,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
+                          style: TextStyle(color: Colors.black),
                         ),
                       ),
                     ],
                   ),
                 ),
               ),
-              Opacity(
-                opacity: 0.64,
-                child: Text(Jiffy(DateTime.parse(lastSeen)).jm),
+              Column(
+                children: [
+                  Opacity(
+                    opacity: 0.64,
+                    child: Text(Jiffy(DateTime.parse(widget.lastSeen)).jm,style: TextStyle(color: Colors.black),),
+                  ),
+                  SizedBox(height: 8),
+                  GestureDetector(
+                    onTap: (){
+                      if(isSelected){
+                        isSelected = false;
+                      }else{
+                        isSelected = true;
+                      }
+                      setState(() {});
+                      print(isSelected);
+                    },
+                    child: AnimatedContainer(
+                      // height: 30,
+                      padding: EdgeInsets.only(
+                          right: isSelected ? 10 : 5.0,
+                          left: 10),
+                      // decoration: BoxDecoration(
+                      //     color: Color(0xffCAF3BB),
+                      //     borderRadius: BorderRadius.only(
+                      //         topLeft: Radius.circular(30),
+                      //         bottomLeft: Radius.circular(30))),
+                      child: Center(
+                        child: Row(
+                          children: [
+                            isSelected
+                                ? Icon(
+                              Icons.clear,color: Colors.red,size: 20,
+                            )
+                                : SizedBox(),
+                            SizedBox(width: 5,),
+                            Icon(
+                              isSelected
+                                  ? Icons.more_horiz
+                                  : Icons.more_vert_rounded,
+                              color: Colors.black,
+                              size: 20,
+                            ),
+
+                          ],
+                        ),
+                      ),
+                      duration: Duration(milliseconds: 800),
+                      curve: Curves.easeInOut,
+                    ),
+                  ),
+               //   Icon(Icons.more_vert_rounded,color: Colors.black,),
+                  // Icon(Icons.more_horiz),
+                ],
               ),
             ],
           ),
