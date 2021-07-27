@@ -47,6 +47,7 @@ class MessagesScreen extends StatelessWidget {
                 builder: (context, userStatus) {
                   if (userStatus.connectionState == ConnectionState.active) {
                     UserList selectedUser = UserList.fromJson(userStatus.data);
+                    print("time ?>>>>> ${selectedUser.lastMessage}");
                     userProvide.tabOnChat(
                         selectedUser, userProvide.seletedChatId);
                     return Text(

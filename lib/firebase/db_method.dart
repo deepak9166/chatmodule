@@ -108,7 +108,6 @@ class DataBase {
       'createAt': DateTime.now().toString(),
       'content': content,
       'type': messageType,
-      'isread': false,
     });
   }
 

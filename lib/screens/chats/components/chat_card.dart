@@ -78,21 +78,24 @@ class _ChatCardState extends State<ChatCard> {
                     ),
                   ),
                   // if (isActive)
-                    Positioned(
-                      right: 0,
-                      bottom: 35,
-                      child: Container(
-                        height: 16,
-                        width: 16,
-                        decoration: BoxDecoration(
-                          color: Colors.green,
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                              color: Theme.of(context).scaffoldBackgroundColor,
-                              width: 3),
-                        ),
-                      ),
-                    )
+                  widget.isActive
+                      ? Positioned(
+                          right: 0,
+                          bottom: 35,
+                          child: Container(
+                            height: 16,
+                            width: 16,
+                            decoration: BoxDecoration(
+                              color: Colors.green,
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                  color:
+                                      Theme.of(context).scaffoldBackgroundColor,
+                                  width: 3),
+                            ),
+                          ),
+                        )
+                      : SizedBox()
                 ],
               ),
               Expanded(
@@ -103,10 +106,11 @@ class _ChatCardState extends State<ChatCard> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                       width: 130,
-                        color: Colors.green,
+                        width: 130,
                         child: Text(
-                          widget.name,maxLines: 1,overflow: TextOverflow.ellipsis,
+                          widget.name,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                               fontSize: 16, fontWeight: FontWeight.w500),
                         ),
@@ -127,16 +131,21 @@ class _ChatCardState extends State<ChatCard> {
               ),
               Column(
                 children: [
-                  Opacity(
-                    opacity: 0.64,
-                    child: Text(Jiffy(DateTime.parse(widget.lastSeen)).jm,style: TextStyle(color: Colors.black),),
-                  ),
+                  widget.lastSeen.isEmpty
+                      ? SizedBox()
+                      : Opacity(
+                          opacity: 0.64,
+                          child: Text(
+                            Jiffy(DateTime.parse(widget.lastSeen)).jm,
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
                   SizedBox(height: 8),
                   GestureDetector(
-                    onTap: (){
-                      if(isSelected){
+                    onTap: () {
+                      if (isSelected) {
                         isSelected = false;
-                      }else{
+                      } else {
                         isSelected = true;
                       }
                       setState(() {});
@@ -145,8 +154,7 @@ class _ChatCardState extends State<ChatCard> {
                     child: AnimatedContainer(
                       // height: 30,
                       padding: EdgeInsets.only(
-                          right: isSelected ? 10 : 5.0,
-                          left: 10),
+                          right: isSelected ? 10 : 5.0, left: 10),
                       // decoration: BoxDecoration(
                       //     color: Color(0xffCAF3BB),
                       //     borderRadius: BorderRadius.only(
@@ -157,10 +165,14 @@ class _ChatCardState extends State<ChatCard> {
                           children: [
                             isSelected
                                 ? Icon(
-                              Icons.clear,color: Colors.red,size: 20,
-                            )
+                                    Icons.clear,
+                                    color: Colors.red,
+                                    size: 20,
+                                  )
                                 : SizedBox(),
-                            SizedBox(width: 5,),
+                            SizedBox(
+                              width: 5,
+                            ),
                             Icon(
                               isSelected
                                   ? Icons.more_horiz
@@ -168,7 +180,6 @@ class _ChatCardState extends State<ChatCard> {
                               color: Colors.black,
                               size: 20,
                             ),
-
                           ],
                         ),
                       ),
@@ -176,7 +187,7 @@ class _ChatCardState extends State<ChatCard> {
                       curve: Curves.easeInOut,
                     ),
                   ),
-               //   Icon(Icons.more_vert_rounded,color: Colors.black,),
+                  //   Icon(Icons.more_vert_rounded,color: Colors.black,),
                   // Icon(Icons.more_horiz),
                 ],
               ),

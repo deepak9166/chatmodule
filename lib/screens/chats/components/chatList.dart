@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:chatmodule/components/filled_outline_button.dart';
 import 'package:chatmodule/firebase/db_method.dart';
 import 'package:chatmodule/models/Chat.dart';
@@ -76,6 +78,15 @@ class _BodyState extends State<Body> {
                   },
                 ),
               )),
+          Padding(
+            padding: const EdgeInsets.only(left: kDefaultPadding),
+            child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Message",
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                )),
+          ),
           isSearch && searchUser.dataList.isNotEmpty
               ? Expanded(
                   child: ListView.builder(
@@ -87,7 +98,7 @@ class _BodyState extends State<Body> {
                           : ChatCard(
                               // chat: searchUser.dataList[index],
 
-                              isActive: false,
+                              isActive: searchUser.dataList[index].isActive,
                               lastMessage: '',
                               lastSeen: searchUser.dataList[index].lastSceen,
                               name: searchUser.dataList[index].name,
@@ -138,7 +149,8 @@ class _BodyState extends State<Body> {
                                             chatListData =
                                             usersListSnapshot.data.docs[index];
                                         return ChatCard(
-                                            isActive: false,
+                                            isActive: searchUser
+                                                .dataList[index].isActive,
                                             lastMessage:
                                                 chatListData['lastChat'],
                                             lastSeen: chatListData['createAt'],
