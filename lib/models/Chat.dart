@@ -16,6 +16,7 @@ class UserList {
   String userCreateAt;
   bool isActive;
   String id;
+  String lastSceen;
   UserList({
     this.name,
     this.lastMessage,
@@ -23,6 +24,7 @@ class UserList {
     this.userCreateAt,
     this.isActive,
     this.id,
+    this.lastSceen,
   });
 
   UserList.fromJson(DocumentSnapshot<Object> json) {
@@ -33,6 +35,7 @@ class UserList {
     image = json['image'];
     userCreateAt = json['createAt'];
     isActive = json['status'];
+    lastSceen = json['lastSeen'];
     id = json.id;
   }
   Map<dynamic, dynamic> toJson() {

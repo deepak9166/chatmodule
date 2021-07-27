@@ -73,44 +73,6 @@ class _BodyState extends State<Body> {
                         print("check lenght >>>> ${value.docs.length}");
                       });
                     });
-<<<<<<< HEAD
-                  });
-                },
-              ),
-            )),
-        isSearch && searchUser.dataList != null
-            ? Expanded(
-                child: ListView.builder(
-                  itemCount: searchUser.dataList.length,
-                  itemBuilder: (context, index) {
-                    return searchUser.dataList[index].id ==
-                            userProvide.loginUserData.id
-                        ? SizedBox()
-                        : ChatCard(
-                            // chat: searchUser.dataList[index],
-
-                            isActive: false,
-                            lastMessage: '',
-                            lastSeen: searchUser.dataList[index].userCreateAt,
-                            name: searchUser.dataList[index].name,
-                            userImage: searchUser.dataList[index].image,
-                            press: () {
-                              var chatId = DataBase().makeChatId(
-                                  userProvide.loginUserData.id,
-                                  searchUser.dataList[index].id);
-
-                              // print(chatId);
-                              userProvide.tabOnChat(
-                                  searchUser.dataList[index], chatId);
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => MessagesScreen(),
-                                ),
-                              );
-                            });
-=======
->>>>>>> dc24bb69e02d71cb36b53159d2fb825ec767f0ba
                   },
                 ),
               )),
@@ -134,8 +96,6 @@ class _BodyState extends State<Body> {
                                 var chatId = DataBase().makeChatId(
                                     userProvide.loginUserData.id,
                                     searchUser.dataList[index].id);
-
-                                // print(chatId);
                                 userProvide.tabOnChat(
                                     searchUser.dataList[index], chatId);
                                 Navigator.push(
@@ -179,14 +139,17 @@ class _BodyState extends State<Body> {
                                             usersListSnapshot.data.docs[index];
                                         return ChatCard(
                                             isActive: false,
-                                            lastMessage: chatListData['lastChat'],
+                                            lastMessage:
+                                                chatListData['lastChat'],
                                             lastSeen: chatListData['createAt'],
                                             name: "${uData.name.capitalize()}",
                                             userImage: "${uData.image}",
                                             press: () {
-                                              var chatId = DataBase().makeChatId(
-                                                  userProvide.loginUserData.id,
-                                                  uData.id);
+                                              var chatId = DataBase()
+                                                  .makeChatId(
+                                                      userProvide
+                                                          .loginUserData.id,
+                                                      uData.id);
 
                                               userProvide.tabOnChat(
                                                   uData, chatId);
