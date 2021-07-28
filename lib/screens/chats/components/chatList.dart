@@ -149,8 +149,7 @@ class _BodyState extends State<Body> {
                                             chatListData =
                                             usersListSnapshot.data.docs[index];
                                         return ChatCard(
-                                            isActive: searchUser
-                                                .dataList[index].isActive,
+                                            isActive: uData.isActive,
                                             lastMessage:
                                                 chatListData['lastChat'],
                                             lastSeen: chatListData['createAt'],

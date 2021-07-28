@@ -13,21 +13,30 @@ class MessagesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     UserProvider userProvide = Provider.of(context, listen: false);
     return Scaffold(
-      appBar: buildAppBar(userProvide),
+      appBar: buildAppBar(userProvide, context),
       body: Body(),
     );
   }
 
-  AppBar buildAppBar(UserProvider userProvide) {
+  AppBar buildAppBar(UserProvider userProvide, BuildContext context) {
     return AppBar(
-      automaticallyImplyLeading: false,
+      automaticallyImplyLeading: true,
       elevation: 2,
       backgroundColor: Colors.white,
+      leading: IconButton(
+        icon: Icon(
+          Icons.arrow_back_ios_rounded,
+          color: Colors.black,
+        ),
+        onPressed: () {
+          Navigator.pop(context);
+        },
+      ),
       title: Row(
         children: [
-          BackButton(
-            color: Colors.black,
-          ),
+          // BackButton(
+          //   color: Colors.black,
+          // ),
           CircleAvatar(
             backgroundImage: userProvide.selectedUserChat.image.isEmpty
                 ? AssetImage("assets/images/user_2.png")
